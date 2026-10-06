@@ -1,5 +1,5 @@
-import Image from "next/image";
-
+//import Image from "next/image";
+/*
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -65,5 +65,26 @@ export default function Home() {
         </div>
       </main>
     </div>
+  );
+}
+*/
+
+import { createClient } from "@/src/lib/supabase/server";
+
+export default async function Home() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("profiles").select("username").limit(1);
+
+  return (
+    <main className="p-8">
+      <h1 className="text-2xl font-bold">GameSmiths</h1>
+      {error ? (
+        <p className="text-red-500">Error: {error.message}</p>
+      ) : (
+        <p className="text-green-500">
+          Conexión OK. Perfiles encontrados: {data.length}
+        </p>
+      )}
+    </main>
   );
 }
